@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:worldiscovery/styles/colors.dart';
+import '../../home/view/home.dart';
+import '../viewmodel/login_view_model.dart';
+import '../viewmodel/register_view_model.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -9,7 +12,10 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
+  final RegisterViewModel registerViewModel = RegisterViewModel();
+  final LoginViewModel loginViewModel = LoginViewModel();
   bool isLogin = true;
+  bool termsAccepted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,74 +37,197 @@ class _RegisterViewState extends State<RegisterView> {
               ),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(20),
-            margin: const EdgeInsets.all(20),
-            height: 500,
-            decoration: BoxDecoration(
-              color: AppColors.backgroundColor,
-              borderRadius: BorderRadius.circular(15), // Bordes redondeados
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.5), // Color de la sombra
-                  spreadRadius: 2, // Radio de expansión de la sombra
-                  blurRadius: 5, // Radio de difuminado de la sombra
-                  offset: const Offset(0, 3), // Desplazamiento de la sombra
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  isLogin ? 'Iniciar Sesión' : 'Registrarse',
-                  style: const TextStyle(fontSize: 18),
-                ),
-                const SizedBox(
-                    width: 10), // Espaciado entre el texto y el Switch
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isLogin =
-                          !isLogin; // Cambia el estado al hacer clic en el Switch
-                    });
-                  },
-                  child: SizedBox(
-                    width: 60,
-                    height: 30,
-                    child: Switch(
-                      value: isLogin,
-                      onChanged: (value) {
-                        setState(() {
-                          isLogin = value;
-                        });
-                      },
-                      activeColor: AppColors.bottonColor,
-                      inactiveThumbColor: AppColors.secondaryColor,
-                    ),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.all(15),
+              width: MediaQuery.of(context).size.width * 0.9, // Ocupa casi todo el ancho de la pantalla
+              decoration: BoxDecoration(
+                color: AppColors.backgroundColor,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
                   ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          isLogin ? 'Iniciar Sesión' : 'Registrarse',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        Switch(
+                          value: isLogin,
+                          onChanged: (value) {
+                            setState(() {
+                              isLogin = value;
+                            });
+                          },
+                          activeColor: AppColors.bottonColor,
+                          inactiveThumbColor: AppColors.secondaryColor,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Expanded(
+                      child: isLogin
+                          ? buildLoginForm(context, LoginViewModel())
+                          : buildRegisterForm(context, RegisterViewModel()),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
-          const SizedBox(height: 20),
-          // Formulario dinámico
-          isLogin ? buildLoginForm() : buildRegisterForm(),
         ],
       ),
     );
   }
+
 }
 
-Widget buildLoginForm() {
-  return Container(
-    child: const Text('Login Form'),
+Widget buildRegisterForm(BuildContext context, RegisterViewModel registerViewModel) {
+  return Column(
+    children: [
+      const Text(
+        'Completa los datos para registrarse',
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(height: 10),
+      Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Nombre',
+                hintText: 'Nombre ejemplo',
+                hintStyle: TextStyle(color: Colors.grey),
+                icon: Icon(Icons.person),
+              ),
+              onChanged: (value) => registerViewModel.setName(value),
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                hintText: 'ejemplo@correo.com',
+                hintStyle: TextStyle(color: Colors.grey),
+                icon: Icon(Icons.email),
+              ),
+              onChanged: (value) => registerViewModel.setEmail(value),
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                hintText: '1234',
+                hintStyle: TextStyle(color: Colors.grey),
+                icon: Icon(Icons.lock),
+              ),
+              onChanged: (value) => registerViewModel.setPassword(value),
+              obscureText: true, // Oculta el texto de la contraseña
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Confirmar Password',
+                hintText: '1234',
+                hintStyle: TextStyle(color: Colors.grey),
+                icon: Icon(Icons.lock),
+              ),
+              onChanged: (value) => registerViewModel.setConfirmPassword(value),
+              obscureText: true, // Oculta el texto de la contraseña
+            ),
+            TextFormField(
+              keyboardType: TextInputType.phone,
+              decoration: const InputDecoration(
+                labelText: 'Celular',
+                hintText: '1234567890',
+                hintStyle: TextStyle(color: Colors.grey),
+                icon: Icon(Icons.phone),
+              ),
+              onChanged: (value) => registerViewModel.setPhoneNumber(value), // Llama a la función para guardar el número
+            ),
+            const SizedBox(height: 25),
+            ElevatedButton(
+              onPressed: () {
+                registerViewModel.register(context);
+              },
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all<Size>(const Size(250, 50)),
+                backgroundColor: MaterialStateProperty.all<Color>(AppColors.primaryColor),
+                elevation: MaterialStateProperty.all<double>(15.0),
+                shadowColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.8)),
+              ),
+              child: const Text(
+               'Registrarse',
+                style:  TextStyle(fontSize: 25, color: AppColors.textColor),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
   );
 }
 
-Widget buildRegisterForm() {
-  return Container(
-    child: const Text('Register Form'),
+
+Widget buildLoginForm(BuildContext context, LoginViewModel loginViewModel) {
+  return Column(
+    children: [
+      const Text(
+        'Bienvenido a World Discovery',
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(height: 10),
+      Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                icon: Icon(Icons.email),
+              ),
+              onChanged: (value) => loginViewModel.setEmail(value),
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                hintText: '1234',
+                hintStyle: TextStyle(color: Colors.grey),
+                icon: Icon(Icons.lock),
+              ),
+              onChanged: (value) => loginViewModel.setPassword(value),
+              obscureText: true, // Oculta el texto de la contraseña
+            ),
+            const SizedBox(height: 25),
+            ElevatedButton(
+              onPressed: () {
+                loginViewModel.login(context);
+              },
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all<Size>(const Size(250, 50)),
+                backgroundColor: MaterialStateProperty.all<Color>(AppColors.primaryColor),
+                elevation: MaterialStateProperty.all<double>(15.0),
+                shadowColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.8)),
+              ),
+              child: const Text(
+                'Iniciar Sesión',
+                style:  TextStyle(fontSize: 25, color: AppColors.textColor),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
   );
 }
 
