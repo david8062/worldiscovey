@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:worldiscovery/screens/home/view/home.dart';
 import 'package:worldiscovery/screens/register/model/register_model.dart';
+import 'package:worldiscovery/screens/sections/views/sections.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -30,7 +29,7 @@ class LoginViewModel extends ChangeNotifier {
 
 
       if (userCredential.user!.emailVerified) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>  const Sections()));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

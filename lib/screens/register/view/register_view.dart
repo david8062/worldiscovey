@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:worldiscovery/styles/colors.dart';
-import '../../home/view/home.dart';
 import '../viewmodel/login_view_model.dart';
 import '../viewmodel/register_view_model.dart';
 

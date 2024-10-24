@@ -71,7 +71,6 @@ class RegisterViewModel extends ChangeNotifier {
         ),
       );
     } catch (e) {
-      print("Error al registrar: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.toString()),
