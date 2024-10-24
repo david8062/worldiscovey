@@ -45,6 +45,12 @@ flutter:
   uses-material-design: true  
   assets:
      - assets/images/Logo.png
+     - assets/images/Bares.png
+     - assets/images/Comida.png
+     - assets/images/Compras.png
+     - assets/images/Museos.png
+     - assets/images/Teatro.png
+
      
 
   

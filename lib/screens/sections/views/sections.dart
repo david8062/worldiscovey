@@ -7,6 +7,24 @@ class Sections extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> textos = [
+      'Museos',
+      'Teatro y Cine',
+      'Compras',
+      'Cafes',
+      'Grastronmía',
+      'Bares'
+    ];
+
+    final List<String> images = [
+      'assets/images/Museos.png',
+      'assets/images/Museos.png',
+      'assets/images/Teatro.png',
+      'assets/images/Compras.png',
+      'assets/images/Comida.png',
+      'assets/images/Bares.png'
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -24,6 +42,78 @@ class Sections extends StatelessWidget {
         child: Menu(),
       ),
 
+      body:Stack(
+        children: [
+          Positioned(
+            top: 125, // Posición del primer Grid desde la parte superior
+            left: 0, // Puedes ajustar esto según necesites
+            right: 0,
+            child: GridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 80.0,
+              mainAxisSpacing: 80.0,
+              padding: const EdgeInsets.all(20.0),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: List.generate(textos.length, (index) {
+                return Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        textos[index],
+                        style: const TextStyle(color: AppColors.textColor, fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                );
+              }),
+
+            ),
+          ),
+          Positioned(
+            top: 80, // Posición del primer Grid desde la parte superior
+            left: 0, // Puedes ajustar esto según necesites
+            right: 0,
+            child: GridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 80.0,
+              mainAxisSpacing: 80.0,
+              padding: const EdgeInsets.all(20.0),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: List.generate(images.length, (index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.boxColor,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Center(
+                    child: Image.asset(
+                      images[index],
+
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ),
+        ]
+      )
+
+
     );
+
+
+
+
+
   }
 }

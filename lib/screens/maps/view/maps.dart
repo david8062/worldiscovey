@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:worldiscovery/styles/colors.dart';
 
+import '../../../components/views/menu.dart';
+
 class MapView extends StatefulWidget {
   const MapView({super.key});
 
@@ -28,6 +30,21 @@ class MapSampleState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Maps',
+          style: TextStyle(
+            color: AppColors.textColor,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: AppColors.primaryColor,
+      ),
+      drawer: const Drawer(
+        child: Menu(),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: GoogleMap(
