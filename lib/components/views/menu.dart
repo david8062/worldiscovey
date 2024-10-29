@@ -38,7 +38,7 @@ class Menu extends StatelessWidget {
         ListTile(
           title: const Text('Mapa'),
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const MapView()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const MapView(placeType: 'museos',)));
           },
         ),
         ListTile(

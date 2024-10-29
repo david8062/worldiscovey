@@ -1,70 +1,54 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:worldiscovery/styles/colors.dart';
+import '../viewModel/map_view_model.dart';
 
-import '../../../components/views/menu.dart';
 
 class MapView extends StatefulWidget {
-  const MapView({super.key});
+
+  final String placeType;
+
+  const MapView({super.key, required this.placeType});
 
   @override
-  State<MapView> createState() => MapSampleState();
+  _MapViewState createState() => _MapViewState();
 }
 
-class MapSampleState extends State<MapView> {
-  final Completer<GoogleMapController> _controller =
-  Completer<GoogleMapController>();
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
+class _MapViewState extends State<MapView> {
+  GoogleMapController? mapController;
+  final LatLng userLocation = const LatLng(4.7110, -74.0721); // Bogotá, ejemplo
+  final MapViewModel _viewModel = MapViewModel(); // Instancia directa de ViewModel
 
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  @override
+  void initState() {
+    super.initState();
+    _loadPlaces();
+  }
+
+  Future<void> _loadPlaces() async {
+    await _viewModel.loadPlaces(widget.placeType, userLocation);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
+    print("Lugar buscado: ${widget.placeType}");
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Maps',
-          style: TextStyle(
-            color: AppColors.textColor,
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Text('Mapa de ${widget.placeType}'),
+      ),
+      body: GoogleMap(
+        onMapCreated: (controller) {
+          setState(() {
+            mapController = controller;
+          });
+        },
+        initialCameraPosition: CameraPosition(
+          target: userLocation,
+          zoom: 14,
         ),
-        centerTitle: true,
-        backgroundColor: AppColors.primaryColor,
-      ),
-      drawer: const Drawer(
-        child: Menu(),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: GoogleMap(
-          mapType: MapType.normal,
-          initialCameraPosition: _kGooglePlex,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: const Text('To the lake!'),
-        icon: const Icon(Icons.directions_boat),
+        markers: _viewModel.markers,
       ),
     );
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }
