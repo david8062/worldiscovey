@@ -43,9 +43,9 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    defaultConfig {        
-       
-        minSdkVersion 23
+    defaultConfig {
+        applicationId "com.worldsicovery.app"
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

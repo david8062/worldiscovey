@@ -13,7 +13,7 @@ class Sections extends StatelessWidget {
       'museum',
       'theatres',
       'shops',
-      'coffe',
+      'cafe',
       'restaurant',
       'Bar'
     ];
@@ -45,8 +45,8 @@ class Sections extends StatelessWidget {
         ),
         body: Stack(children: [
           Positioned(
-            top: 125, // Posición del primer Grid desde la parte superior
-            left: 0, // Puedes ajustar esto según necesites
+            top: 125,
+            left: 0,
             right: 0,
             child: GridView.count(
               crossAxisCount: 2,

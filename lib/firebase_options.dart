@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
-
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -39,19 +38,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDa2cdkL7Mnz2MEFAaAY9gdBSbQO5zqqpk',
-    appId: '1:766124797309:android:ee51697a69feae08563014',
-    messagingSenderId: '766124797309',
-    projectId: 'bogota-discover-420403',
-    storageBucket: 'bogota-discover-420403.appspot.com',
+    apiKey: 'AIzaSyC98A2D6Jf7uL8_QBzg2aAXWgSZre_iiCo',
+    appId: '1:869994493944:android:6910c9fd60b9a25ec4c80d',
+    messagingSenderId: '869994493944',
+    projectId: 'worlddiscovery-61e29',
+    storageBucket: 'worlddiscovery-61e29.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCToAmMIgbafNBAoExg8EOIvMnhwDsQKTE',
-    appId: '1:766124797309:ios:84883c70df4f2ffc563014',
-    messagingSenderId: '766124797309',
-    projectId: 'bogota-discover-420403',
-    storageBucket: 'bogota-discover-420403.appspot.com',
+    apiKey: 'AIzaSyDOXdFuGMkioN6JciR42hFPLrrggEe-6DM',
+    appId: '1:869994493944:ios:25526d5cdc3e0196c4c80d',
+    messagingSenderId: '869994493944',
+    projectId: 'worlddiscovery-61e29',
+    storageBucket: 'worlddiscovery-61e29.firebasestorage.app',
     iosBundleId: 'com.example.worlddiscovery.worldiscovery',
   );
+
 }
