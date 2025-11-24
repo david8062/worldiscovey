@@ -26,20 +26,16 @@ class _RegisterViewState extends State<RegisterView> {
             clipper: BottomCurveClipper(),
             child: Container(
               color: AppColors.backgroundColor,
-              height: 200, // Ajusta la altura según lo que necesites
-              child: Center(
-                child: Image.asset(
-                  'assets/images/Logo.png',
-                  width: 150, // Ajusta el tamaño de la imagen
-                  height: 150,
-                ),
+              height: 200,
+              child: const Center(
+                child: Text("Bogota Discover")
               ),
             ),
           ),
           Expanded(
             child: Container(
               margin: const EdgeInsets.all(15),
-              width: MediaQuery.of(context).size.width * 0.9, // Ocupa casi todo el ancho de la pantalla
+              width: MediaQuery.of(context).size.width * 0.9,
               decoration: BoxDecoration(
                 color: AppColors.backgroundColor,
                 borderRadius: BorderRadius.circular(15),
@@ -55,7 +51,6 @@ class _RegisterViewState extends State<RegisterView> {
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,9 +73,11 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     const SizedBox(height: 20),
                     Expanded(
-                      child: isLogin
-                          ? buildLoginForm(context, LoginViewModel())
-                          : buildRegisterForm(context, RegisterViewModel()),
+                      child: SingleChildScrollView(
+                        child: isLogin
+                            ? buildLoginForm(context, loginViewModel)
+                            : buildRegisterForm(context, registerViewModel),
+                      ),
                     ),
                   ],
                 ),
@@ -91,11 +88,11 @@ class _RegisterViewState extends State<RegisterView> {
       ),
     );
   }
-
 }
 
 Widget buildRegisterForm(BuildContext context, RegisterViewModel registerViewModel) {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       const Text(
         'Completa los datos para registrarse',
@@ -132,7 +129,7 @@ Widget buildRegisterForm(BuildContext context, RegisterViewModel registerViewMod
                 icon: Icon(Icons.lock),
               ),
               onChanged: (value) => registerViewModel.setPassword(value),
-              obscureText: true, // Oculta el texto de la contraseña
+              obscureText: true,
             ),
             TextFormField(
               decoration: const InputDecoration(
@@ -142,7 +139,7 @@ Widget buildRegisterForm(BuildContext context, RegisterViewModel registerViewMod
                 icon: Icon(Icons.lock),
               ),
               onChanged: (value) => registerViewModel.setConfirmPassword(value),
-              obscureText: true, // Oculta el texto de la contraseña
+              obscureText: true,
             ),
             TextFormField(
               keyboardType: TextInputType.phone,
@@ -152,22 +149,20 @@ Widget buildRegisterForm(BuildContext context, RegisterViewModel registerViewMod
                 hintStyle: TextStyle(color: Colors.grey),
                 icon: Icon(Icons.phone),
               ),
-              onChanged: (value) => registerViewModel.setPhoneNumber(value), // Llama a la función para guardar el número
+              onChanged: (value) => registerViewModel.setPhoneNumber(value),
             ),
             const SizedBox(height: 25),
             ElevatedButton(
-              onPressed: () {
-                registerViewModel.register(context);
-              },
+              onPressed: () => registerViewModel.register(context),
               style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all<Size>(const Size(250, 50)),
-                backgroundColor: MaterialStateProperty.all<Color>(AppColors.primaryColor),
-                elevation: MaterialStateProperty.all<double>(15.0),
-                shadowColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.8)),
+                minimumSize: MaterialStateProperty.all(const Size(250, 50)),
+                backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
+                elevation: MaterialStateProperty.all(15.0),
+                shadowColor: MaterialStateProperty.all(Colors.black.withOpacity(0.8)),
               ),
               child: const Text(
-               'Registrarse',
-                style:  TextStyle(fontSize: 25, color: AppColors.textColor),
+                'Registrarse',
+                style: TextStyle(fontSize: 25, color: AppColors.textColor),
               ),
             ),
           ],
@@ -177,12 +172,12 @@ Widget buildRegisterForm(BuildContext context, RegisterViewModel registerViewMod
   );
 }
 
-
 Widget buildLoginForm(BuildContext context, LoginViewModel loginViewModel) {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       const Text(
-        'Bienvenido a World Discovery',
+        'Bienvenido a Bogota Discovery',
         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       const SizedBox(height: 10),
@@ -205,22 +200,20 @@ Widget buildLoginForm(BuildContext context, LoginViewModel loginViewModel) {
                 icon: Icon(Icons.lock),
               ),
               onChanged: (value) => loginViewModel.setPassword(value),
-              obscureText: true, // Oculta el texto de la contraseña
+              obscureText: true,
             ),
             const SizedBox(height: 25),
             ElevatedButton(
-              onPressed: () {
-                loginViewModel.login(context);
-              },
+              onPressed: () => loginViewModel.login(context),
               style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all<Size>(const Size(250, 50)),
-                backgroundColor: MaterialStateProperty.all<Color>(AppColors.primaryColor),
-                elevation: MaterialStateProperty.all<double>(15.0),
-                shadowColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.8)),
+                minimumSize: MaterialStateProperty.all(const Size(250, 50)),
+                backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
+                elevation: MaterialStateProperty.all(15.0),
+                shadowColor: MaterialStateProperty.all(Colors.black.withOpacity(0.8)),
               ),
               child: const Text(
                 'Iniciar Sesión',
-                style:  TextStyle(fontSize: 25, color: AppColors.textColor),
+                style: TextStyle(fontSize: 25, color: AppColors.textColor),
               ),
             ),
           ],
@@ -230,31 +223,25 @@ Widget buildLoginForm(BuildContext context, LoginViewModel loginViewModel) {
   );
 }
 
-// Clipper personalizado para hacer la curva en la parte inferior del contenedor
+// Clipper personalizado
 class BottomCurveClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = Path();
     path.lineTo(0.0, size.height - 50);
-
     var firstControlPoint = Offset(size.width / 2, size.height);
     var firstEndPoint = Offset(size.width, size.height - 50);
-
     path.quadraticBezierTo(
       firstControlPoint.dx,
       firstControlPoint.dy,
       firstEndPoint.dx,
       firstEndPoint.dy,
     );
-
     path.lineTo(size.width, 0.0);
     path.close();
-
     return path;
   }
 
   @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
-  }
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

@@ -43,9 +43,6 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-
-
-
     defaultConfig {
         applicationId "com.worldsicovery.app"
         minSdkVersion flutter.minSdkVersion
@@ -66,7 +63,5 @@ flutter {
 }
 
 dependencies {
-    configurations.implementation {
-        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
-    }
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10"
 }

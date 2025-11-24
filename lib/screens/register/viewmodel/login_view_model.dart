@@ -21,15 +21,27 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   Future<void> login(BuildContext context) async {
+    final email = userLogin.email.trim();
+    final password = userLogin.password.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Por favor ingresa correo y contraseña')),
+      );
+      return;
+    }
+
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: userLogin.email,
-        password: userLogin.password,
+        email: email,
+        password: password,
       );
 
-
       if (userCredential.user!.emailVerified) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) =>  const Sections()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Sections()),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -50,8 +62,15 @@ class LoginViewModel extends ChangeNotifier {
             content: Text('Contraseña incorrecta'),
           ),
         );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.message}'),
+          ),
+        );
       }
     }
-}
+  }
+
 
 }

@@ -13,11 +13,7 @@ class Home extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min, 
           children: <Widget>[
-            Image.asset(
-              'assets/images/Logo.png',  
-              width: 300,   
-              height: 300,  
-            ),
+            const Text("Bienvenido a Bogota Discover"),
             const SizedBox(height: 200.0),  // Espacio entre la imagen y el botón
             ElevatedButton(
               onPressed: () {
